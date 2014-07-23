@@ -56,11 +56,23 @@
 //              NSStringFromCGAffineTransform(square.transform),
 //              NSStringFromCGPoint(square.center));
     };
+    
+    /**
+     The below code creates an item behavior, associates it with the square, and then adds the behavior object to the animator. The elasticity property controls the bounciness of the item; a value of 1.0 represents a completely elastic collision; that is, where no energy or velocity is lost in a collision. You’ve set the elasticity of your square to 0.6, which means that the square will lose velocity with each bounce.
+     */
+    UIDynamicItemBehavior *itemBehaviour = [[UIDynamicItemBehavior alloc] initWithItems:@[square]];
+    itemBehaviour.elasticity = 0.6;
+    [_animator addBehavior:itemBehaviour];
 }
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier atPoint:(CGPoint)p
 {
     NSLog(@"Boundary contact occurred - %@", identifier);
+    UIView *view = (UIView *)item;
+    view.backgroundColor = [UIColor yellowColor];
+    [UIView animateWithDuration:0.3 animations:^{
+        view.backgroundColor = [UIColor grayColor];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
